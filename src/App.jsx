@@ -5,7 +5,13 @@ const drawerWidth = 224;
 
 function App() {
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box
+      sx={{
+        display: "flex",
+        width: "100%",
+        backgroundColor: "blue",
+      }}
+    >
       <Drawer
         variant="permanent"
         anchor="left"
@@ -22,7 +28,7 @@ function App() {
         <Link to="/users">Users</Link>
       </Drawer>
       <Box>
-        <header>Teste Header</header>
+        <header style={{ backgroundColor: "red" }}>Teste Header</header>
         <Outlet />
       </Box>
     </Box>
