@@ -1,4 +1,4 @@
-import { Box, Drawer } from "@mui/material";
+import { AppBar, Box, Drawer, Toolbar, Typography } from "@mui/material";
 import { Link, Outlet } from "react-router-dom";
 
 const drawerWidth = 224;
@@ -10,6 +10,7 @@ function App() {
         display: "flex",
         width: "100%",
         backgroundColor: "blue",
+        height: "100vh",
       }}
     >
       <Drawer
@@ -27,8 +28,24 @@ function App() {
         <Link to="/home">Home</Link>
         <Link to="/users">Users</Link>
       </Drawer>
-      <Box>
-        <header style={{ backgroundColor: "red" }}>Teste Header</header>
+      <Box
+        sx={{
+          width: "100%",
+        }}
+      >
+        <AppBar
+          position="fixed"
+          sx={{
+            width: `calc(100% - ${drawerWidth}px)`,
+            ml: `${drawerWidth}px`,
+          }}
+        >
+          <Toolbar>
+            <Typography variant="h6" noWrap component="div">
+              Permanent drawer
+            </Typography>
+          </Toolbar>
+        </AppBar>
         <Outlet />
       </Box>
     </Box>
