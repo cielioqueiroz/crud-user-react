@@ -9,7 +9,6 @@ function App() {
       sx={{
         display: "flex",
         width: "100%",
-        backgroundColor: "blue",
         height: "100vh",
       }}
     >
@@ -38,15 +37,26 @@ function App() {
           sx={{
             width: `calc(100% - ${drawerWidth}px)`,
             ml: `${drawerWidth}px`,
+            backgroundColor: "#fff",
           }}
         >
           <Toolbar>
-            <Typography variant="h6" noWrap component="div">
-              Permanent drawer
+            <Typography variant="myCustomText" noWrap component="h4">
+              Sistema de Usuários
             </Typography>
           </Toolbar>
         </AppBar>
-        <Outlet />
+        <Box
+          component="main"
+          sx={{
+            backgroundColor: "#eeeeee",
+            height: "100vh",
+            marginTop: 8,
+            padding: "25px 50px",
+          }}
+        >
+          <Outlet />
+        </Box>
       </Box>
     </Box>
   );
