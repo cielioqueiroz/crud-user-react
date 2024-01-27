@@ -50,9 +50,8 @@ function App() {
           component="main"
           sx={{
             backgroundColor: "#eeeeee",
-            height: "calc(100% - 66px)",
-            marginTop: 8,
-            padding: "25px 50px",
+            height: "100%",
+            padding: "100px 50px 50px",
           }}
         >
           <Outlet />
