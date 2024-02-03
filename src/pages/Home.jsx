@@ -8,8 +8,20 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import { useEffect, useState } from "react";
 
 function Home() {
+  const [usuario, setUsuario] = useState(0);
+  const [status, setStatus] = useState(0);
+
+  useEffect(() => {
+    return countUsers();
+  }, [usuario]);
+
+  useEffect(() => {
+    return countActiveUsers();
+  }, [status]);
+
   const usuarios = [
     {
       id: "1",
@@ -18,7 +30,7 @@ function Home() {
       funcao: "Software Developer Jr",
       email: "cielio@teste.com",
       contato: "94987653156",
-      status: "active",
+      status: "inactive",
     },
     {
       id: "2",
@@ -48,7 +60,17 @@ function Home() {
       status: "active",
     },
   ];
-  console.log(usuarios);
+
+  function countUsers() {
+    setUsuario(usuarios.length);
+  }
+
+  function countActiveUsers() {
+    const activeUsers = usuarios.filter(
+      (usuario) => usuario.status === "active"
+    );
+    setStatus(activeUsers.length);
+  }
   return (
     <Box
       sx={{
@@ -77,6 +99,23 @@ function Home() {
           height: "75%",
         }}
       >
+        <div>
+          <div>
+            <p>
+              Total de Usuários: <span>{usuario}</span>
+            </p>
+          </div>
+          <div>
+            <p>
+              Total de Salários: <span>R$ 22.000,00</span>
+            </p>
+          </div>
+          <div>
+            <p>
+              Total de Usuários Ativos: <span>{status}</span>
+            </p>
+          </div>
+        </div>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
