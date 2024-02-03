@@ -66,9 +66,7 @@ function Home() {
   }
 
   function countActiveUsers() {
-    const activeUsers = usuarios.filter(
-      (usuario) => usuario.status === "active"
-    );
+    const activeUsers = usuarios.filter((usuario) => usuario.status === "active");
     setStatus(activeUsers.length);
   }
   return (
