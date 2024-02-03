@@ -1,4 +1,16 @@
-import { AppBar, Box, Drawer, Toolbar, Typography } from "@mui/material";
+import { People, SpaceDashboard } from "@mui/icons-material";
+import {
+  AppBar,
+  Box,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import { Link, Outlet } from "react-router-dom";
 
 const drawerWidth = 224;
@@ -24,8 +36,29 @@ function App() {
           },
         }}
       >
-        <Link to="/home">Home</Link>
-        <Link to="/users">Users</Link>
+        <List>
+          <Link to="/home">
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  <SpaceDashboard />
+                </ListItemIcon>
+                <ListItemText primary="Home" />
+              </ListItemButton>
+            </ListItem>
+          </Link>
+
+          <Link to="/users">
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  <People />
+                </ListItemIcon>
+                <ListItemText primary="Usuários" />
+              </ListItemButton>
+            </ListItem>
+          </Link>
+        </List>
       </Drawer>
       <Box
         sx={{
