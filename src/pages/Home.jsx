@@ -14,6 +14,8 @@ function Home() {
     {
       id: "1",
       name: "Cielio Queiroz",
+      salario: "R$ 4.000,00",
+      funcao: "Software Developer Jr",
       email: "cielio@teste.com",
       contato: "94987653156",
       status: "active",
@@ -21,6 +23,8 @@ function Home() {
     {
       id: "2",
       name: "Alice Queiroz",
+      salario: "R$ 8.000,00",
+      funcao: "Médica Ortopedista",
       email: "alice@teste.com",
       contato: "94987653156",
       status: "active",
@@ -28,14 +32,18 @@ function Home() {
     {
       id: "3",
       name: "Bruna Queiroz",
+      salario: "R$ 5.000,00",
+      funcao: "Administradora de Empresas",
       email: "bruna@teste.com",
       contato: "94987653156",
       status: "active",
     },
     {
       id: "4",
-      name: "Pedro Queiroz",
-      email: "pedro@teste.com",
+      name: "Davi Queiroz",
+      salario: "R$ 5.000,00",
+      funcao: "Sotware Enginer",
+      email: "davi@teste.com",
       contato: "94987653156",
       status: "active",
     },
@@ -74,6 +82,8 @@ function Home() {
             <TableHead>
               <TableRow>
                 <TableCell>Nome</TableCell>
+                <TableCell align="left">Salário</TableCell>
+                <TableCell align="left">Função</TableCell>
                 <TableCell align="left">E-mail</TableCell>
                 <TableCell align="left">Contato</TableCell>
                 <TableCell align="left">Status</TableCell>
@@ -88,6 +98,8 @@ function Home() {
                   <TableCell component="th" scope="row">
                     {usuario.name}
                   </TableCell>
+                  <TableCell align="left">{usuario.salario}</TableCell>
+                  <TableCell align="left">{usuario.funcao}</TableCell>
                   <TableCell align="left">{usuario.email}</TableCell>
                   <TableCell align="left">{usuario.contato}</TableCell>
                   <TableCell align="left">{usuario.status}</TableCell>
