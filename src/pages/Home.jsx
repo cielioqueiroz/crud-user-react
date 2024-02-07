@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 function Home() {
   const [usuario, setUsuario] = useState(0);
   const [status, setStatus] = useState(0);
+  const [salario, setSalario] = useState(0);
 
   useEffect(() => {
     return countUsers();
@@ -22,11 +23,15 @@ function Home() {
     return countActiveUsers();
   }, [status]);
 
+  useEffect(() => {
+    return countSalario();
+  }, []);
+
   const usuarios = [
     {
       id: "1",
       name: "Cielio Queiroz",
-      salario: "R$ 4.000,00",
+      salario: 4000,
       funcao: "Software Developer Jr",
       email: "cielio@teste.com",
       contato: "94987653156",
@@ -35,7 +40,7 @@ function Home() {
     {
       id: "2",
       name: "Alice Queiroz",
-      salario: "R$ 8.000,00",
+      salario: 8000,
       funcao: "Médica Ortopedista",
       email: "alice@teste.com",
       contato: "94987653156",
@@ -44,7 +49,7 @@ function Home() {
     {
       id: "3",
       name: "Bruna Queiroz",
-      salario: "R$ 5.000,00",
+      salario: 5000,
       funcao: "Administradora de Empresas",
       email: "bruna@teste.com",
       contato: "94987653156",
@@ -53,7 +58,7 @@ function Home() {
     {
       id: "4",
       name: "Davi Queiroz",
-      salario: "R$ 5.000,00",
+      salario: 3500,
       funcao: "Sotware Enginer",
       email: "davi@teste.com",
       contato: "94987653156",
@@ -66,8 +71,25 @@ function Home() {
   }
 
   function countActiveUsers() {
-    const activeUsers = usuarios.filter((usuario) => usuario.status === "active");
+    const activeUsers = usuarios.filter(
+      (usuario) => usuario.status === "active"
+    );
     setStatus(activeUsers.length);
+  }
+
+  function formater(value) {
+    return value.toLocaleString("pt-br", {
+      style: "currency",
+      currency: "BRL",
+    });
+  }
+
+  function countSalario() {
+    const totalSalario = usuarios.reduce(
+      (acc, total) => acc + total.salario,
+      0
+    );
+    setSalario(formater(totalSalario));
   }
   return (
     <Box
@@ -105,7 +127,7 @@ function Home() {
           </div>
           <div>
             <p>
-              Total de Salários: <span>R$ 22.000,00</span>
+              Total de Salários: <span>{salario}</span>
             </p>
           </div>
           <div>
@@ -132,10 +154,8 @@ function Home() {
                   key={usuario.id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell component="th" scope="row">
-                    {usuario.name}
-                  </TableCell>
-                  <TableCell align="left">{usuario.salario}</TableCell>
+                  <TableCell component="th" scope="row">{usuario.name}</TableCell>
+                  <TableCell align="left">{formater(usuario.salario)}</TableCell>
                   <TableCell align="left">{usuario.funcao}</TableCell>
                   <TableCell align="left">{usuario.email}</TableCell>
                   <TableCell align="left">{usuario.contato}</TableCell>
