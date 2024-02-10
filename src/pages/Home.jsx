@@ -9,81 +9,38 @@ import {
   TableRow,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import supabase from "../api/supabase";
+import supabase from "./../api/supabase";
 import formater from "../helpers/global";
 
 function Home() {
   const [usuario, setUsuario] = useState(0);
   const [status, setStatus] = useState(0);
   const [salario, setSalario] = useState(0);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    return countUsers();
-  }, [usuario]);
-
-  useEffect(() => {
-    return countActiveUsers();
-  }, [status]);
-
-  useEffect(() => {
-    return countSalario();
+    return getUsers();
   }, []);
 
-  const usuarios = [
-    {
-      id: "1",
-      name: "Cielio Queiroz",
-      salario: 4000,
-      funcao: "Software Developer Jr",
-      email: "cielio@teste.com",
-      contato: "94987653156",
-      status: "inactive",
-    },
-    {
-      id: "2",
-      name: "Alice Queiroz",
-      salario: 8000,
-      funcao: "Médica Ortopedista",
-      email: "alice@teste.com",
-      contato: "94987653156",
-      status: "active",
-    },
-    {
-      id: "3",
-      name: "Bruna Queiroz",
-      salario: 5000,
-      funcao: "Administradora de Empresas",
-      email: "bruna@teste.com",
-      contato: "94987653156",
-      status: "active",
-    },
-    {
-      id: "4",
-      name: "Davi Queiroz",
-      salario: 3500,
-      funcao: "Sotware Enginer",
-      email: "davi@teste.com",
-      contato: "94987653156",
-      status: "active",
-    },
-  ];
-
-  function countUsers() {
-    setUsuario(usuarios.length);
+  async function getUsers() {
+    const { data } = await supabase.from("usuarios").select("*");
+    setUsers(data);
+    countUsers(data.length);
+    countActiveUsers(data);
+    countSalario(data);
   }
 
-  function countActiveUsers() {
-    const activeUsers = usuarios.filter(
-      (usuario) => usuario.status === "active"
-    );
+  function countUsers(total) {
+    setUsuario(total);
+  }
+
+  function countActiveUsers(users) {
+    const activeUsers = users.filter((usuario) => usuario.status === "active");
     setStatus(activeUsers.length);
   }
 
-  function countSalario() {
-    const totalSalario = usuarios.reduce(
-      (acc, total) => acc + total.salario,
-      0
-    );
+  function countSalario(salary) {
+    const totalSalario = salary.reduce((acc, total) => acc + total.salario, 0);
     setSalario(formater(totalSalario));
   }
   return (
@@ -144,7 +101,7 @@ function Home() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {usuarios.map((usuario) => (
+              {users.map((usuario) => (
                 <TableRow
                   key={usuario.id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
