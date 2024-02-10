@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Box,
   Paper,
@@ -8,7 +9,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import PageHeader from "../components/PageHeader";
 import supabase from "./../api/supabase";
 import formater from "../helpers/global";
 
@@ -19,7 +20,7 @@ function Home() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    return getUsers();
+    getUsers();
   }, []);
 
   async function getUsers() {
@@ -54,17 +55,10 @@ function Home() {
           height: "25%",
         }}
       >
-        <h2
-          style={{
-            padding: "40px 0",
-            fontSize: "2rem",
-          }}
-        >
-          Painel de Usuários
-        </h2>
-        <p>
-          Gerenciador de contas, aqui estão todos os usuários da plataforma.
-        </p>
+        <PageHeader
+          title="Painel de Usuários"
+          subtitle="Gerenciador de contas, aqui estão todos os usuários da plataforma."
+        />
       </div>
       <div
         style={{
