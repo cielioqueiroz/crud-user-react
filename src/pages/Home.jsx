@@ -9,6 +9,8 @@ import {
   TableRow,
 } from "@mui/material";
 import { useEffect, useState } from "react";
+import supabase from "../api/supabase";
+import formater from "../helpers/global";
 
 function Home() {
   const [usuario, setUsuario] = useState(0);
@@ -75,13 +77,6 @@ function Home() {
       (usuario) => usuario.status === "active"
     );
     setStatus(activeUsers.length);
-  }
-
-  function formater(value) {
-    return value.toLocaleString("pt-br", {
-      style: "currency",
-      currency: "BRL",
-    });
   }
 
   function countSalario() {
@@ -154,8 +149,12 @@ function Home() {
                   key={usuario.id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell component="th" scope="row">{usuario.name}</TableCell>
-                  <TableCell align="left">{formater(usuario.salario)}</TableCell>
+                  <TableCell component="th" scope="row">
+                    {usuario.name}
+                  </TableCell>
+                  <TableCell align="left">
+                    {formater(usuario.salario)}
+                  </TableCell>
                   <TableCell align="left">{usuario.funcao}</TableCell>
                   <TableCell align="left">{usuario.email}</TableCell>
                   <TableCell align="left">{usuario.contato}</TableCell>
