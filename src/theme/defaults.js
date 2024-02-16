@@ -7,6 +7,11 @@ const theme = createTheme({
       color: "black",
     } 
   },
+  palette: {
+    primary: {
+      main: '#121212'
+    },
+  },
 });
 
 export default theme;
