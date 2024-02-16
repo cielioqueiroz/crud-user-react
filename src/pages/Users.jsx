@@ -1,9 +1,11 @@
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import PageHeader from "../components/PageHeader";
 import { useState } from "react";
 import supabase from "../api/supabase";
+import Form from "../components/Form";
 
 function Users() {
+  const [isVisible, setIsVisible] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     salario: undefined,
@@ -20,9 +22,19 @@ function Users() {
   async function handleSubmit(e) {
     e.preventDefault();
     console.log(formData);
-    const { data, error } = await supabase
-    .from('usuarios')
-    .insert(formData)
+    const { data, error } = await supabase.from("usuarios").insert(formData);
+
+    setFormData({
+      name: "",
+      salario: undefined,
+      funcao: "",
+      email: "",
+      contato: "",
+    });
+  }
+
+  function showForm() {
+    setIsVisible(true);
   }
 
   return (
@@ -31,54 +43,18 @@ function Users() {
         title="Usuários"
         subtitle="Gerenciador de ações, aqui será realizadas as ações para o usuário."
       />
-      <div>
-        <form
-          style={{
-            display: "flex",
-            width: "40%",
-            gap: 3,
-            flexDirection: "column",
-          }}
-          onSubmit={handleSubmit}
-        >
-          <input
-            type="text"
-            placeholder="Nome"
-            value={formData.name}
-            onChange={handleChange}
-            name="name"
-          />
-          <input
-            type="number"
-            placeholder="Salario"
-            value={formData.salario}
-            onChange={handleChange}
-            name="salario"
-          />
-          <input
-            type="text"
-            placeholder="Funcao"
-            value={formData.funcao}
-            onChange={handleChange}
-            name="funcao"
-          />
-          <input
-            type="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-            name="email"
-          />
-          <input
-            type="text"
-            placeholder="Contato"
-            value={formData.contato}
-            onChange={handleChange}
-            name="contato"
-          />
-          <button type="submit">Cadastrar</button>
-        </form>
-      </div>
+      <Box>
+        <Button variant="contained" onClick={showForm}>
+          Cadastrar Usuário
+        </Button>
+      </Box>
+      {isVisible && (
+        <Form
+          onChangeValue={handleChange}
+          onSubmitValue={handleSubmit}
+          formData={formData}
+        />
+      )}
     </Box>
   );
 }
