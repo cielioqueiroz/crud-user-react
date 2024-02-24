@@ -8,6 +8,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from "@mui/material";
 import PageHeader from "../components/PageHeader";
 import supabase from "./../api/supabase";
@@ -83,23 +84,32 @@ function Home() {
           </Box>
         ) : (
           <>
-            <div>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                backgroundColor: "#fff",
+                marginBottom:"30px",
+                padding:"15px 20px 10px",
+                borderRadius:"6px",
+              }}
+            >
               <div>
-                <p>
+                <Typography variant="h6" gutterBottom>
                   Total de Usuários: <span>{usuario}</span>
-                </p>
+                </Typography>
               </div>
               <div>
-                <p>
+                <Typography variant="h6" gutterBottom>
                   Total de Salários: <span>{salario}</span>
-                </p>
+                </Typography>
               </div>
               <div>
-                <p>
+                <Typography variant="h6" gutterBottom>
                   Total de Usuários Ativos: <span>{status}</span>
-                </p>
+                </Typography>
               </div>
-            </div>
+            </Box>
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
