@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import {
   Box,
-  Paper,
-  Table,
   TableBody,
   TableCell,
   TableContainer,
@@ -14,6 +12,7 @@ import PageHeader from "../components/PageHeader";
 import supabase from "./../api/supabase";
 import formater from "../helpers/global";
 import Loading from "../components/Loading";
+import TableContent from "../components/Table";
 
 function Home() {
   const [usuario, setUsuario] = useState(0);
@@ -89,9 +88,9 @@ function Home() {
                 display: "flex",
                 justifyContent: "space-between",
                 backgroundColor: "#fff",
-                marginBottom:"30px",
-                padding:"15px 20px 10px",
-                borderRadius:"6px",
+                marginBottom: "30px",
+                padding: "15px 20px 10px",
+                borderRadius: "6px",
               }}
             >
               <div>
@@ -110,39 +109,7 @@ function Home() {
                 </Typography>
               </div>
             </Box>
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Nome</TableCell>
-                    <TableCell align="left">Salário</TableCell>
-                    <TableCell align="left">Função</TableCell>
-                    <TableCell align="left">E-mail</TableCell>
-                    <TableCell align="left">Contato</TableCell>
-                    <TableCell align="left">Status</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {users.map((usuario) => (
-                    <TableRow
-                      key={usuario.id}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        {usuario.name}
-                      </TableCell>
-                      <TableCell align="left">
-                        {formater(usuario.salario)}
-                      </TableCell>
-                      <TableCell align="left">{usuario.funcao}</TableCell>
-                      <TableCell align="left">{usuario.email}</TableCell>
-                      <TableCell align="left">{usuario.contato}</TableCell>
-                      <TableCell align="left">{usuario.status}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <TableContent users={users} />
           </>
         )}
       </div>
