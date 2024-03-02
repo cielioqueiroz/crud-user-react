@@ -1,6 +1,7 @@
 import { TextField } from "@mui/material";
 import { createUseStyles } from "react-jss";
 import ActionButton from "./Button";
+import { Close } from "@mui/icons-material";
 
 const useStyles = createUseStyles({
   root: {
@@ -22,14 +23,23 @@ const useStyles = createUseStyles({
     textAlign: "center",
     marginTop: "15px",
   },
+  close: {
+    position: "absolute",
+    top: "15px",
+    right: "15px",
+    cursor: "pointer",
+  },
 });
 
-function Form({ onChangeValue, onSubmitValue, formData }) {
+function Form({ onChangeValue, onSubmitValue, formData, closeForm }) {
   const classes = useStyles();
 
   return (
     <form className={classes.root} onSubmit={onSubmitValue}>
       <h2>Formulário de Cadastro</h2>
+
+      <Close className={classes.close} onClick={closeForm} />
+
       <TextField
         type="text"
         placeholder="Nome"

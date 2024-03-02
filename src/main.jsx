@@ -3,7 +3,9 @@ import { RouterProvider } from "react-router-dom";
 import router from "./Routers/index";
 import { ThemeProvider } from "@emotion/react";
 import theme from "./theme/defaults";
+import { UserProvider } from "./context/useUserContext"; 
 import "./assets/index.css";
+
 
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
@@ -12,6 +14,8 @@ import "@fontsource/roboto/700.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <ThemeProvider theme={theme}>
-    <RouterProvider router={router} />
+    <UserProvider>
+      <RouterProvider router={router} />
+    </UserProvider>
   </ThemeProvider>
 );

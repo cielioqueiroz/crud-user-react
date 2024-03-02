@@ -1,15 +1,19 @@
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import PageHeader from "../components/PageHeader";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import supabase from "../api/supabase";
 import Form from "../components/Form";
 import ActionButton from "../components/Button";
+import TableContent from "../components/Table";
+import { UserContext } from "../context/useUserContext";
 
 function Users() {
-  const [isVisible, setIsVisible] = useState(true);
+  const users = useContext(UserContext)
+
+  const [isVisible, setIsVisible] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
-    salario: undefined,
+    salario: 0,
     funcao: "",
     email: "",
     contato: "",
@@ -22,20 +26,28 @@ function Users() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    alert("OK");
     console.log(formData);
     const { data, error } = await supabase.from("usuarios").insert(formData);
 
     setFormData({
       name: "",
-      salario: undefined,
+      salario: 0,
       funcao: "",
       email: "",
       contato: "",
     });
+
+    closeForm();
   }
 
   function showForm() {
     setIsVisible(true);
+  }
+
+  function closeForm() {
+    console.log("closeForm");
+    setIsVisible(false);
   }
 
   return (
@@ -45,16 +57,17 @@ function Users() {
         subtitle="Gerenciador de ações, aqui será realizadas as ações para o usuário."
       />
       <Box>
-        <ActionButton action={showForm}>
-          Cadastrar Usuário
-        </ActionButton>
+        <ActionButton action={showForm}>Cadastrar Usuário</ActionButton>
       </Box>
+
+      <TableContent users={users}/>
 
       {isVisible && (
         <Form
           onChangeValue={handleChange}
           onSubmitValue={handleSubmit}
           formData={formData}
+          closeForm={closeForm}
         />
       )}
     </Box>
