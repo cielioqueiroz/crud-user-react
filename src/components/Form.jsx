@@ -1,53 +1,74 @@
+import { TextField } from "@mui/material";
+import { createUseStyles } from "react-jss";
+import ActionButton from "./Button";
+
+const useStyles = createUseStyles({
+  root: {
+    display: "flex",
+    width: "500px",
+    gap: 10,
+    flexDirection: "column",
+    backgroundColor: "#ffffff",
+    padding: 30,
+    borderRadius: 6,
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    boxShadow: "0 0 10px rgba(0, 0, 0, 0.233)",
+  },
+  buttonSet: {
+    width: "100%",
+    textAlign: "center",
+    marginTop: "15px",
+  },
+});
+
 function Form({ onChangeValue, onSubmitValue, formData }) {
+  const classes = useStyles();
+
   return (
-    <div>
-      <form
-        style={{
-          display: "flex",
-          width: "40%",
-          gap: 3,
-          flexDirection: "column",
-        }}
-        onSubmit={onSubmitValue}
-      >
-        <input
-          type="text"
-          placeholder="Nome"
-          value={formData.name}
-          onChange={onChangeValue}
-          name="name"
-        />
-        <input
-          type="number"
-          placeholder="Salario"
-          value={formData.salario}
-          onChange={onChangeValue}
-          name="salario"
-        />
-        <input
-          type="text"
-          placeholder="Funcao"
-          value={formData.funcao}
-          onChange={onChangeValue}
-          name="funcao"
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={onChangeValue}
-          name="email"
-        />
-        <input
-          type="text"
-          placeholder="Contato"
-          value={formData.contato}
-          onChange={onChangeValue}
-          name="contato"
-        />
-        <button type="submit">Cadastrar</button>
-      </form>
-    </div>
+    <form className={classes.root} onSubmit={onSubmitValue}>
+      <h2>Formulário de Cadastro</h2>
+      <TextField
+        type="text"
+        placeholder="Nome"
+        value={formData.name}
+        onChange={onChangeValue}
+        name="name"
+      />
+      <TextField
+        type="number"
+        placeholder="Salario"
+        value={formData.salario}
+        onChange={onChangeValue}
+        name="salario"
+      />
+      <TextField
+        type="text"
+        placeholder="Funcao"
+        value={formData.funcao}
+        onChange={onChangeValue}
+        name="funcao"
+      />
+      <TextField
+        type="email"
+        placeholder="Email"
+        value={formData.email}
+        onChange={onChangeValue}
+        name="email"
+      />
+      <TextField
+        type="text"
+        placeholder="Contato"
+        value={formData.contato}
+        onChange={onChangeValue}
+        name="contato"
+      />
+      <div className={classes.buttonSet}>
+        <ActionButton type="submit">Cadastrar</ActionButton>
+      </div>
+    </form>
   );
 }
 

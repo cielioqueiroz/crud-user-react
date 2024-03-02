@@ -3,9 +3,10 @@ import PageHeader from "../components/PageHeader";
 import { useState } from "react";
 import supabase from "../api/supabase";
 import Form from "../components/Form";
+import ActionButton from "../components/Button";
 
 function Users() {
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const [formData, setFormData] = useState({
     name: "",
     salario: undefined,
@@ -44,10 +45,11 @@ function Users() {
         subtitle="Gerenciador de ações, aqui será realizadas as ações para o usuário."
       />
       <Box>
-        <Button variant="contained" onClick={showForm}>
+        <ActionButton action={showForm}>
           Cadastrar Usuário
-        </Button>
+        </ActionButton>
       </Box>
+
       {isVisible && (
         <Form
           onChangeValue={handleChange}
