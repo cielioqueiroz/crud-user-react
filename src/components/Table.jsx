@@ -12,8 +12,10 @@ import formater from "../helpers/global";
 import { useLocation } from "react-router-dom";
 import supabase from "../api/supabase";
 import { UserContext } from "../context/useUserContext";
+import DeleteForever from "@mui/icons-material/DeleteForever";
+import EditNote from "@mui/icons-material/EditNote";
 
-export default function TableContent() {
+export default function TableContent({ callEditForm }) {
   const { users, setUsers } = useContext(UserContext);
   const { pathname } = useLocation();
 
@@ -62,10 +64,10 @@ export default function TableContent() {
               <TableCell align="left">{usuario.status}</TableCell>
               {pathname === "/users" && (
                 <TableCell align="left">
-                  <button onClick={() => alert(usuario.id)}>Editar</button>
-                  <button onClick={() => removeUser(usuario.id, usuario.name)}>
-                    Excluir
-                  </button>
+                  <EditNote onClick={callEditForm} />
+                  <DeleteForever
+                    onClick={() => removeUser(usuario.id, usuario.name)}
+                  />
                 </TableCell>
               )}
             </TableRow>
