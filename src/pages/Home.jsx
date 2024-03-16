@@ -42,7 +42,7 @@ export const Home = () => {
           height: "75%",
         }}
       >
-        {users.length ? ( // se usuário estiver vazio, exibe o loading
+        {!users.length ? ( // se usuário estiver vazio, exibe o loading
           <Box
             sx={{
               height: "100%",
