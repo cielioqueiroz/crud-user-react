@@ -22,6 +22,7 @@ export default function TableContent({users}) {
             <TableCell align="left">E-mail</TableCell>
             <TableCell align="left">Contato</TableCell>
             <TableCell align="left">Status</TableCell>
+            <TableCell align="left">Ações</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -38,6 +39,10 @@ export default function TableContent({users}) {
               <TableCell align="left">{usuario.email}</TableCell>
               <TableCell align="left">{usuario.contato}</TableCell>
               <TableCell align="left">{usuario.status}</TableCell>
+              <TableCell align="left">
+                <button>Editar</button>
+                <button>Excluir</button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
