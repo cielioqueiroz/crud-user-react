@@ -1,23 +1,26 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
+
 import { Box, Typography } from "@mui/material";
-import PageHeader from "../components/PageHeader";
-import formater from "../helpers/global";
-import Loading from "../components/Loading";
-import TableContent from "../components/Table";
+
+import { Loading } from "../components/Loading";
+import { PageHeader } from "../components/PageHeader";
+import { TableContent } from "../components/Table";
+
 import { UserContext } from "../context/useUserContext";
+import { formatter } from "../helpers/global";
 
-function Home() {
-  const users = useContext(UserContext);
+export const Home = () => {
+  const { users } = useContext(UserContext);
 
-  function countActiveUsers(users) {
-    const activeUsers = users.filter((usuario) => usuario.status === "active");
-    return activeUsers.length;
-  }
+  const countActiveUsers = (users) =>
+    users.filter((user) => user.status === "active").length;
 
-  function countSalario(users) {
-    const totalSalario = users.reduce((acc, total) => acc + total.salario, 0);
-    return formater(totalSalario);
-  }
+  const countSalary = (users) => {
+    const totalSalary = users.reduce((acc, total) => acc + total.salary, 0);
+
+    return formatter(totalSalary);
+  };
+
   return (
     <Box
       sx={{
@@ -39,7 +42,7 @@ function Home() {
           height: "75%",
         }}
       >
-        {!users.length ? ( // se usuário estiver vazio, exibe o loading
+        {users.length ? ( // se usuário estiver vazio, exibe o loading
           <Box
             sx={{
               height: "100%",
@@ -69,7 +72,7 @@ function Home() {
               </div>
               <div>
                 <Typography variant="h6" gutterBottom>
-                  Total de Salários: <span>{countSalario(users)}</span>
+                  Total de Salários: <span>{countSalary(users)}</span>
                 </Typography>
               </div>
               <div>
@@ -79,12 +82,13 @@ function Home() {
                 </Typography>
               </div>
             </Box>
+
             <TableContent users={users.reverse().slice(0, 4)} />
           </>
         )}
       </div>
     </Box>
   );
-}
+};
 
 export default Home;

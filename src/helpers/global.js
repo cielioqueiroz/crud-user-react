@@ -1,8 +1,5 @@
-function formater(value) {
-  return value.toLocaleString("pt-br", {
+export const formatter = (value) =>
+  value?.toLocaleString("pt-br", {
     style: "currency",
     currency: "BRL",
   });
-}
-
-export default formater;

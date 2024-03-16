@@ -1,11 +1,13 @@
 import ReactDOM from "react-dom/client";
-import { RouterProvider } from "react-router-dom";
-import router from "./Routers/index";
-import { ThemeProvider } from "@emotion/react";
-import theme from "./theme/defaults";
-import { UserProvider } from "./context/useUserContext"; 
-import "./assets/index.css";
 
+import { RouterProvider } from "react-router-dom";
+import { ThemeProvider } from "@emotion/react";
+
+import { router } from "./Routers/index";
+import { theme } from "./theme/defaults";
+import { UserProvider } from "./context/useUserContext";
+
+import "./assets/index.css";
 
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";

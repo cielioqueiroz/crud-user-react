@@ -1,54 +1,59 @@
-import { Box } from "@mui/material";
-import PageHeader from "../components/PageHeader";
 import { useState, useContext } from "react";
-import supabase from "../api/supabase";
-import Form from "../components/Form";
-import ActionButton from "../components/Button";
-import TableContent from "../components/Table";
+
+import { Box } from "@mui/material";
+
+import { PageHeader } from "../components/PageHeader";
+import { Form } from "../components/Form";
+import { ActionButton } from "../components/Button";
+import { TableContent } from "../components/Table";
+
 import { UserContext } from "../context/useUserContext";
+import { supabase } from "../api/supabase";
 
-function Users() {
-  const users = useContext(UserContext)
-
+export const Users = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
-    salario: 0,
-    funcao: "",
+    salary: 0,
+    func: "",
     email: "",
-    contato: "",
+    contact: "",
   });
 
-  function handleChange(e) {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  }
+  const { users } = useContext(UserContext);
 
-  async function handleSubmit(e) {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     alert("OK");
     console.log(formData);
+
     const { data, error } = await supabase.from("usuarios").insert(formData);
 
     setFormData({
       name: "",
-      salario: 0,
-      funcao: "",
+      salary: 0,
+      func: "",
       email: "",
-      contato: "",
+      contact: "",
     });
 
     closeForm();
-  }
+  };
 
-  function showForm() {
+  const showForm = () => {
     setIsVisible(true);
-  }
+  };
 
-  function closeForm() {
+  const closeForm = () => {
     console.log("closeForm");
     setIsVisible(false);
-  }
+  };
 
   return (
     <Box>
@@ -60,7 +65,7 @@ function Users() {
         <ActionButton action={showForm}>Cadastrar Usuário</ActionButton>
       </Box>
 
-      <TableContent users={users}/>
+      <TableContent users={users} />
 
       {isVisible && (
         <Form
@@ -72,6 +77,4 @@ function Users() {
       )}
     </Box>
   );
-}
-
-export default Users;
+};
