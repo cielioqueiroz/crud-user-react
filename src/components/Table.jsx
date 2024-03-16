@@ -7,13 +7,20 @@ import {
   Paper,
   Table,
 } from "@mui/material";
-import React from "react";
+import React, { useContext } from "react";
 import formater from "../helpers/global";
 import { useLocation } from "react-router-dom";
 import supabase from "../api/supabase";
+import { UserContext } from "../context/useUserContext";
 
-export default function TableContent({ users }) {
+export default function TableContent() {
+  const { users, setUsers } = useContext(UserContext);
   const { pathname } = useLocation();
+
+  function slicedUser(id) {
+    const filteredUsers = users.filter((user) => user.id !== id);
+    setUsers(filteredUsers);
+  }
 
   async function removeUser(id, name) {
     const { error } = await supabase.from("usuarios").delete().eq("id", id);
@@ -22,6 +29,7 @@ export default function TableContent({ users }) {
       return;
     }
     alert(`Usuário ${name} excluido com Sucesso`);
+    slicedUser(id);
   }
 
   return (
