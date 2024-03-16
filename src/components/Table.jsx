@@ -10,10 +10,19 @@ import {
 import React from "react";
 import formater from "../helpers/global";
 import { useLocation } from "react-router-dom";
+import supabase from "../api/supabase";
 
 export default function TableContent({ users }) {
   const { pathname } = useLocation();
-  console.log(pathname);
+
+  async function removeUser(id, name) {
+    const { error } = await supabase.from("usuarios").delete().eq("id", id);
+    if (error) {
+      alert("Ops deu erro");
+      return;
+    }
+    alert(`Usuário ${name} excluido com Sucesso`);
+  }
 
   return (
     <TableContainer component={Paper}>
@@ -46,7 +55,9 @@ export default function TableContent({ users }) {
               {pathname === "/users" && (
                 <TableCell align="left">
                   <button onClick={() => alert(usuario.id)}>Editar</button>
-                  <button onClick={() => alert(usuario.id)}>Excluir</button>
+                  <button onClick={() => removeUser(usuario.id, usuario.name)}>
+                    Excluir
+                  </button>
                 </TableCell>
               )}
             </TableRow>
