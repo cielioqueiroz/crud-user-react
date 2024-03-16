@@ -79,7 +79,7 @@ function Home() {
                 </Typography>
               </div>
             </Box>
-            <TableContent users={users} />
+            <TableContent users={users.reverse().slice(0, 4)} />
           </>
         )}
       </div>
