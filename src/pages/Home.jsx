@@ -1,45 +1,22 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
 import PageHeader from "../components/PageHeader";
-import supabase from "./../api/supabase";
 import formater from "../helpers/global";
 import Loading from "../components/Loading";
 import TableContent from "../components/Table";
+import { UserContext } from "../context/useUserContext";
 
 function Home() {
-  const [usuario, setUsuario] = useState(0);
-  const [status, setStatus] = useState(0);
-  const [salario, setSalario] = useState(0);
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    getUsers();
-  }, []);
-
-  async function getUsers() {
-    setLoading(true);
-    const { data } = await supabase.from("usuarios").select("*");
-
-    setUsers(data);
-    countUsers(data.length);
-    countActiveUsers(data);
-    countSalario(data);
-    setLoading(false);
-  }
-
-  function countUsers(total) {
-    setUsuario(total);
-  }
+  const users = useContext(UserContext);
 
   function countActiveUsers(users) {
     const activeUsers = users.filter((usuario) => usuario.status === "active");
-    setStatus(activeUsers.length);
+    return activeUsers.length;
   }
 
-  function countSalario(salary) {
-    const totalSalario = salary.reduce((acc, total) => acc + total.salario, 0);
-    setSalario(formater(totalSalario));
+  function countSalario(users) {
+    const totalSalario = users.reduce((acc, total) => acc + total.salario, 0);
+    return formater(totalSalario);
   }
   return (
     <Box
@@ -62,7 +39,7 @@ function Home() {
           height: "75%",
         }}
       >
-        {loading ? (
+        {!users.length ? ( // se usuário estiver vazio, exibe o loading
           <Box
             sx={{
               height: "100%",
@@ -87,17 +64,18 @@ function Home() {
             >
               <div>
                 <Typography variant="h6" gutterBottom>
-                  Total de Usuários: <span>{usuario}</span>
+                  Total de Usuários: <span>{users.length}</span>
                 </Typography>
               </div>
               <div>
                 <Typography variant="h6" gutterBottom>
-                  Total de Salários: <span>{salario}</span>
+                  Total de Salários: <span>{countSalario(users)}</span>
                 </Typography>
               </div>
               <div>
                 <Typography variant="h6" gutterBottom>
-                  Total de Usuários Ativos: <span>{status}</span>
+                  Total de Usuários Ativos:{" "}
+                  <span>{countActiveUsers(users)}</span>
                 </Typography>
               </div>
             </Box>
