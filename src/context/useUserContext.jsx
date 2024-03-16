@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect, useMemo } from "react";
 
 import { supabase } from "../api/supabase";
+import UserMapper from "../api/mappers/UserMapper";
 
 const UserContext = createContext();
 
@@ -12,7 +13,9 @@ const UserProvider = ({ children }) => {
       try {
         const { data } = await supabase.from("usuarios").select("*");
 
-        setUsers(data);
+        const usersMapper = data.map(UserMapper.toDomain);
+
+        setUsers(usersMapper);
       } catch (error) {
         console.error(error, "Erro ao buscar usuários");
       }
