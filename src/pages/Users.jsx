@@ -8,7 +8,7 @@ import TableContent from "../components/Table";
 import { UserContext } from "../context/useUserContext";
 
 function Users() {
-  const users = useContext(UserContext)
+  const { users } = useContext(UserContext);
 
   const [isVisible, setIsVisible] = useState(false);
   const [formData, setFormData] = useState({
@@ -50,17 +50,21 @@ function Users() {
     setIsVisible(false);
   }
 
+  function callEditForm() {
+    setIsVisible(true);
+  }
+
   return (
     <Box>
       <PageHeader
         title="Usuários"
         subtitle="Gerenciador de ações, aqui será realizadas as ações para o usuário."
       />
-      <Box>
+      <Box sx={{ padding: "20px 0" }}>
         <ActionButton action={showForm}>Cadastrar Usuário</ActionButton>
       </Box>
 
-      <TableContent users={users}/>
+      <TableContent callEditForm={callEditForm} />
 
       {isVisible && (
         <Form
