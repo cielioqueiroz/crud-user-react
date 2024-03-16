@@ -15,11 +15,8 @@ export const Home = () => {
   const countActiveUsers = (users) =>
     users.filter((user) => user.status === "active").length;
 
-  const countSalary = (users) => {
-    const totalSalary = users.reduce((acc, total) => acc + total.salary, 0);
-
-    return formatter(totalSalary);
-  };
+  const countSalary = (users) =>
+    formatter(users.reduce((acc, total) => acc + total.salary, 0));
 
   return (
     <Box
