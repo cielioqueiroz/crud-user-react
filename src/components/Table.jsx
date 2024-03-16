@@ -9,8 +9,12 @@ import {
 } from "@mui/material";
 import React from "react";
 import formater from "../helpers/global";
+import { useLocation } from "react-router-dom";
 
-export default function TableContent({users}) {
+export default function TableContent({ users }) {
+  const { pathname } = useLocation();
+  console.log(pathname);
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -22,7 +26,7 @@ export default function TableContent({users}) {
             <TableCell align="left">E-mail</TableCell>
             <TableCell align="left">Contato</TableCell>
             <TableCell align="left">Status</TableCell>
-            <TableCell align="left">Ações</TableCell>
+            {pathname === "/users" && <TableCell align="left">Ações</TableCell>}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -39,10 +43,12 @@ export default function TableContent({users}) {
               <TableCell align="left">{usuario.email}</TableCell>
               <TableCell align="left">{usuario.contato}</TableCell>
               <TableCell align="left">{usuario.status}</TableCell>
-              <TableCell align="left">
-                <button>Editar</button>
-                <button>Excluir</button>
-              </TableCell>
+              {pathname === "/users" && (
+                <TableCell align="left">
+                  <button onClick={() => alert(usuario.id)}>Editar</button>
+                  <button onClick={() => alert(usuario.id)}>Excluir</button>
+                </TableCell>
+              )}
             </TableRow>
           ))}
         </TableBody>
