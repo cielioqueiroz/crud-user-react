@@ -1,7 +1,8 @@
+import { Close } from "@mui/icons-material";
 import { TextField } from "@mui/material";
 import { createUseStyles } from "react-jss";
-import ActionButton from "./Button";
-import { Close } from "@mui/icons-material";
+
+import { ActionButton } from "./Button";
 
 const useStyles = createUseStyles({
   root: {
@@ -31,7 +32,7 @@ const useStyles = createUseStyles({
   },
 });
 
-function Form({ onChangeValue, onSubmitValue, formData, closeForm }) {
+export const Form = ({ onChangeValue, onSubmitValue, formData, closeForm }) => {
   const classes = useStyles();
 
   return (
@@ -47,20 +48,23 @@ function Form({ onChangeValue, onSubmitValue, formData, closeForm }) {
         onChange={onChangeValue}
         name="name"
       />
+
       <TextField
         type="number"
         placeholder="Salario"
-        value={formData.salario}
+        value={formData.salary}
         onChange={onChangeValue}
-        name="salario"
+        name="salary"
       />
+
       <TextField
         type="text"
         placeholder="Funcao"
-        value={formData.funcao}
+        value={formData.func}
         onChange={onChangeValue}
-        name="funcao"
+        name="func"
       />
+
       <TextField
         type="email"
         placeholder="Email"
@@ -68,18 +72,18 @@ function Form({ onChangeValue, onSubmitValue, formData, closeForm }) {
         onChange={onChangeValue}
         name="email"
       />
+
       <TextField
         type="text"
         placeholder="Contato"
-        value={formData.contato}
+        value={formData.contact}
         onChange={onChangeValue}
-        name="contato"
+        name="contact"
       />
+
       <div className={classes.buttonSet}>
         <ActionButton type="submit">Cadastrar</ActionButton>
       </div>
     </form>
   );
-}
-
-export default Form;
+};

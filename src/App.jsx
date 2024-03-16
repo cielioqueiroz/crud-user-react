@@ -1,3 +1,4 @@
+import { Link, Outlet } from "react-router-dom";
 import { People, SpaceDashboard } from "@mui/icons-material";
 import {
   AppBar,
@@ -11,87 +12,86 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { Link, Outlet } from "react-router-dom";
 
-const drawerWidth = 224;
+const DRAWER_WIDTH = 224;
 
-function App() {
-  return (
-    <Box
+export const App = () => (
+  <Box
+    sx={{
+      display: "flex",
+      width: "100%",
+      minHeight: "100vh",
+    }}
+  >
+    <Drawer
+      variant="permanent"
+      anchor="left"
       sx={{
-        display: "flex",
-        width: "100%",
-        minHeight: "100vh",
+        width: DRAWER_WIDTH,
+        flexShrink: 0,
+        "& .MuiDrawer-paper": {
+          width: DRAWER_WIDTH,
+          boxSizing: "border-box",
+        },
       }}
     >
-      <Drawer
-        variant="permanent"
-        anchor="left"
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          "& .MuiDrawer-paper": {
-            width: drawerWidth,
-            boxSizing: "border-box",
-          },
-        }}
-      >
-        <List>
-          <Link to="/home">
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  <SpaceDashboard />
-                </ListItemIcon>
-                <ListItemText primary="Home" />
-              </ListItemButton>
-            </ListItem>
-          </Link>
+      <List>
+        <Link to="/home">
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                <SpaceDashboard />
+              </ListItemIcon>
 
-          <Link to="/users">
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  <People />
-                </ListItemIcon>
-                <ListItemText primary="Usuários" />
-              </ListItemButton>
-            </ListItem>
-          </Link>
-        </List>
-      </Drawer>
-      <Box
+              <ListItemText primary="Home" />
+            </ListItemButton>
+          </ListItem>
+        </Link>
+
+        <Link to="/users">
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                <People />
+              </ListItemIcon>
+
+              <ListItemText primary="Usuários" />
+            </ListItemButton>
+          </ListItem>
+        </Link>
+      </List>
+    </Drawer>
+
+    <Box
+      sx={{
+        width: "100%",
+      }}
+    >
+      <AppBar
+        position="fixed"
         sx={{
-          width: "100%",
+          width: `calc(100% - ${DRAWER_WIDTH}px)`,
+          ml: `${DRAWER_WIDTH}px`,
+          backgroundColor: "#fff",
         }}
       >
-        <AppBar
-          position="fixed"
-          sx={{
-            width: `calc(100% - ${drawerWidth}px)`,
-            ml: `${drawerWidth}px`,
-            backgroundColor: "#fff",
-          }}
-        >
-          <Toolbar>
-            <Typography variant="myCustomText" noWrap component="h4">
-              Sistema de Usuários
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        <Box
-          component="main"
-          sx={{
-            backgroundColor: "#eeeeee",
-            height: "100%",
-            padding: "100px 50px 50px",
-          }}
-        >
-          <Outlet />
-        </Box>
+        <Toolbar>
+          <Typography variant="myCustomText" noWrap component="h4">
+            Sistema de Usuários
+          </Typography>
+        </Toolbar>
+      </AppBar>
+
+      <Box
+        component="main"
+        sx={{
+          backgroundColor: "#eeeeee",
+          height: "100%",
+          padding: "100px 50px 50px",
+        }}
+      >
+        <Outlet />
       </Box>
     </Box>
-  );
-}
-
-export default App;
+  </Box>
+);

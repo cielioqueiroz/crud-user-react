@@ -1,17 +1,15 @@
 import { createTheme } from "@mui/material";
 
-const theme = createTheme({
-  typography: { 
+export const theme = createTheme({
+  typography: {
     fontFamily: "Roboto, sans-serif",
-    myCustomText:{
+    myCustomText: {
       color: "black",
-    } 
+    },
   },
   palette: {
     primary: {
-      main: '#121212'
+      main: "#121212",
     },
   },
 });
-
-export default theme;

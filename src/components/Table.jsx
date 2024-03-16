@@ -1,3 +1,6 @@
+import React from "react";
+import { useLocation } from "react-router-dom";
+
 import {
   TableBody,
   TableCell,
@@ -7,11 +10,10 @@ import {
   Paper,
   Table,
 } from "@mui/material";
-import React from "react";
-import formater from "../helpers/global";
-import { useLocation } from "react-router-dom";
 
-export default function TableContent({ users }) {
+import { formatter } from "../helpers/global";
+
+export const TableContent = ({ users }) => {
   const { pathname } = useLocation();
   console.log(pathname);
 
@@ -26,27 +28,30 @@ export default function TableContent({ users }) {
             <TableCell align="left">E-mail</TableCell>
             <TableCell align="left">Contato</TableCell>
             <TableCell align="left">Status</TableCell>
+
             {pathname === "/users" && <TableCell align="left">Ações</TableCell>}
           </TableRow>
         </TableHead>
+
         <TableBody>
-          {users.map((usuario) => (
+          {users.map(({ id, name, salary, func, email, contact, status }) => (
             <TableRow
-              key={usuario.id}
+              key={id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {usuario.name}
+                {name}
               </TableCell>
-              <TableCell align="left">{formater(usuario.salario)}</TableCell>
-              <TableCell align="left">{usuario.funcao}</TableCell>
-              <TableCell align="left">{usuario.email}</TableCell>
-              <TableCell align="left">{usuario.contato}</TableCell>
-              <TableCell align="left">{usuario.status}</TableCell>
+              <TableCell align="left">{formatter(salary)}</TableCell>
+              <TableCell align="left">{func}</TableCell>
+              <TableCell align="left">{email}</TableCell>
+              <TableCell align="left">{contact}</TableCell>
+              <TableCell align="left">{status}</TableCell>
+
               {pathname === "/users" && (
                 <TableCell align="left">
-                  <button onClick={() => alert(usuario.id)}>Editar</button>
-                  <button onClick={() => alert(usuario.id)}>Excluir</button>
+                  <button onClick={() => alert(id)}>Editar</button>
+                  <button onClick={() => alert(id)}>Excluir</button>
                 </TableCell>
               )}
             </TableRow>
@@ -55,4 +60,4 @@ export default function TableContent({ users }) {
       </Table>
     </TableContainer>
   );
-}
+};
