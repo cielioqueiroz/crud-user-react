@@ -15,7 +15,7 @@ import { UserContext } from "../context/useUserContext";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import EditNote from "@mui/icons-material/EditNote";
 
-export default function TableContent({ callEditForm }) {
+export default function TableContent({ callEditForm, openModal }) {
   const { users, setUsers } = useContext(UserContext);
   const { pathname } = useLocation();
 
@@ -24,15 +24,15 @@ export default function TableContent({ callEditForm }) {
     setUsers(filteredUsers);
   }
 
-  async function removeUser(id, name) {
-    const { error } = await supabase.from("usuarios").delete().eq("id", id);
-    if (error) {
-      alert("Ops deu erro");
-      return;
-    }
-    alert(`Usuário ${name} excluido com Sucesso`);
-    slicedUser(id);
-  }
+  // async function removeUser(id, name) {
+  //   const { error } = await supabase.from("usuarios").delete().eq("id", id);
+  //   if (error) {
+  //     alert("Ops deu erro");
+  //     return;
+  //   }
+  //   alert(`Usuário ${name} excluido com Sucesso`);
+  //   slicedUser(id);
+  // }
 
   return (
     <TableContainer component={Paper}>
@@ -66,7 +66,7 @@ export default function TableContent({ callEditForm }) {
                 <TableCell align="left">
                   <EditNote onClick={callEditForm} />
                   <DeleteForever
-                    onClick={() => removeUser(usuario.id, usuario.name)}
+                    onClick={openModal}
                   />
                 </TableCell>
               )}

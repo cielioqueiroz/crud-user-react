@@ -6,11 +6,13 @@ import Form from "../components/Form";
 import ActionButton from "../components/Button";
 import TableContent from "../components/Table";
 import { UserContext } from "../context/useUserContext";
+import Modal from "../components/Modal";
 
 function Users() {
   const { users } = useContext(UserContext);
 
   const [isVisible, setIsVisible] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     salario: 0,
@@ -54,6 +56,14 @@ function Users() {
     setIsVisible(true);
   }
 
+  function openModal(){
+    setShowModal(true);
+  }
+
+  function closeModal(){
+    setShowModal(false);
+  }
+
   return (
     <Box>
       <PageHeader
@@ -64,7 +74,10 @@ function Users() {
         <ActionButton action={showForm}>Cadastrar Usuário</ActionButton>
       </Box>
 
-      <TableContent callEditForm={callEditForm} />
+      <TableContent 
+        callEditForm={callEditForm} 
+        openModal={openModal}
+      />
 
       {isVisible && (
         <Form
@@ -74,6 +87,9 @@ function Users() {
           closeForm={closeForm}
         />
       )}
+
+      {showModal && <Modal closeModal={closeModal} />}
+      
     </Box>
   );
 }
