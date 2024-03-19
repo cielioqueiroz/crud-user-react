@@ -56,7 +56,7 @@ export default function TableContent({ callEditForm, openModal }) {
                     onClick={callEditForm} />
                   <DeleteForever
                     cursor="pointer"
-                    onClick={openModal}
+                    onClick={() => openModal(usuario.id, usuario.name)}
                   />
                 </TableCell>
               )}

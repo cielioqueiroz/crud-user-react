@@ -13,6 +13,8 @@ import supabase from "../api/supabase";
 function Users() {
   const { users, setUsers } = useContext(UserContext);
 
+  const [id, setId] = useState(0);
+  const [name, setName] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
@@ -58,7 +60,9 @@ function Users() {
     setIsVisible(true);
   }
 
-  function openModal() {
+  function openModal(id, name) {
+    setId(id);
+    setName(name);
     setShowModal(true);
   }
 
@@ -71,7 +75,7 @@ function Users() {
     setUsers(filteredUsers);
   }
 
-  async function removeUser(id, name) {
+  async function removeUser() {
     const { error } = await supabase.from("usuarios").delete().eq("id", id);
     if (error) {
       alert("Ops deu erro");
