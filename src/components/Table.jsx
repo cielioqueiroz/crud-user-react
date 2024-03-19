@@ -53,7 +53,8 @@ export default function TableContent({ callEditForm, openModal }) {
                 <TableCell align="left">
                   <EditNote 
                     cursor="pointer"
-                    onClick={callEditForm} />
+                    onClick={() => callEditForm(usuario)} 
+                  />
                   <DeleteForever
                     cursor="pointer"
                     onClick={() => openModal(usuario.id, usuario.name)}

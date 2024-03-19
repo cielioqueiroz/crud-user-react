@@ -15,6 +15,7 @@ function Users() {
 
   const [id, setId] = useState(0);
   const [name, setName] = useState("");
+  const [edit, setEdit] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
@@ -25,6 +26,16 @@ function Users() {
     contato: "",
   });
 
+  function clearFormData() {
+    setFormData({
+      name: "",
+      salario: 0,
+      funcao: "",
+      email: "",
+      contato: "",
+    });
+  }
+
   function handleChange(e) {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -34,17 +45,27 @@ function Users() {
     e.preventDefault();
     alert("OK");
     console.log(formData);
-    const { data, error } = await supabase.from("usuarios").insert(formData);
+    const { data, error, status } = await supabase
+      .from("usuarios")
+      .insert(formData);
+    if (status === 201) {
+      const newUser = { ...formData, status: "active" };
+      setUsers([...users, newUser]);
+    }
 
-    setFormData({
-      name: "",
-      salario: 0,
-      funcao: "",
-      email: "",
-      contato: "",
-    });
+    clearFormData();
 
     closeForm();
+  }
+
+  async function handleUpdate(e) {
+    e.preventDefault();
+    console.log(formData);
+    const { data, error } = await supabase
+      .from("usuarios")
+      .update(formData)
+      .eq("id", id)
+      .select();
   }
 
   function showForm() {
@@ -52,11 +73,23 @@ function Users() {
   }
 
   function closeForm() {
-    console.log("closeForm");
+    edit && setEdit(false);
     setIsVisible(false);
+    clearFormData();
   }
 
-  function callEditForm() {
+  function callEditForm(user) {
+    setId(user.id);
+    setEdit(true);
+
+    setFormData({
+      name: user.name,
+      salario: user.salario,
+      funcao: user.funcao,
+      email: user.email,
+      contato: user.contato,
+    });
+
     setIsVisible(true);
   }
 
@@ -101,8 +134,9 @@ function Users() {
 
       {isVisible && (
         <Form
+          toEdit={edit}
           onChangeValue={handleChange}
-          onSubmitValue={handleSubmit}
+          onSubmitValue={edit ? handleUpdate : handleSubmit}
           formData={formData}
           closeForm={closeForm}
         />
