@@ -31,12 +31,12 @@ const useStyles = createUseStyles({
   },
 });
 
-function Form({ onChangeValue, onSubmitValue, formData, closeForm }) {
+function Form({ onChangeValue, onSubmitValue, formData, closeForm, toEdit }) {
   const classes = useStyles();
 
   return (
     <form className={classes.root} onSubmit={onSubmitValue}>
-      <h2>Formulário de Cadastro</h2>
+      <h2>{!toEdit ? "Formulário de Cadastro" : "Atualizar Usuário"}</h2>
 
       <Close className={classes.close} onClick={closeForm} />
 
@@ -76,7 +76,9 @@ function Form({ onChangeValue, onSubmitValue, formData, closeForm }) {
         name="contato"
       />
       <div className={classes.buttonSet}>
-        <ActionButton type="submit">Cadastrar</ActionButton>
+        <ActionButton type="submit">
+          {!toEdit ? "Cadastrar" : "Atualizar"}
+        </ActionButton>
       </div>
     </form>
   );
