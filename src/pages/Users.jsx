@@ -1,15 +1,17 @@
-import { Box } from "@mui/material";
-import PageHeader from "../components/PageHeader";
 import { useState, useContext } from "react";
-import supabase from "../api/supabase";
+
+import { Box } from "@mui/material";
+import { UserContext } from "../context/useUserContext";
+import PageHeader from "../components/PageHeader";
 import Form from "../components/Form";
 import ActionButton from "../components/Button";
 import TableContent from "../components/Table";
-import { UserContext } from "../context/useUserContext";
 import Modal from "../components/Modal";
 
+import supabase from "../api/supabase";
+
 function Users() {
-  const { users } = useContext(UserContext);
+  const { users, setUsers } = useContext(UserContext);
 
   const [isVisible, setIsVisible] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -56,12 +58,29 @@ function Users() {
     setIsVisible(true);
   }
 
-  function openModal(){
+  function openModal() {
     setShowModal(true);
   }
 
-  function closeModal(){
+  function closeModal() {
     setShowModal(false);
+  }
+
+  function slicedUser(id) {
+    const filteredUsers = users.filter((user) => user.id !== id);
+    setUsers(filteredUsers);
+  }
+
+  async function removeUser(id, name) {
+    const { error } = await supabase.from("usuarios").delete().eq("id", id);
+    if (error) {
+      alert("Ops deu erro");
+      closeModal();
+      return;
+    }
+    alert(`Usuário ${name} excluido com Sucesso`);
+    slicedUser(id);
+    closeModal();
   }
 
   return (
@@ -74,10 +93,7 @@ function Users() {
         <ActionButton action={showForm}>Cadastrar Usuário</ActionButton>
       </Box>
 
-      <TableContent 
-        callEditForm={callEditForm} 
-        openModal={openModal}
-      />
+      <TableContent callEditForm={callEditForm} openModal={openModal} />
 
       {isVisible && (
         <Form
@@ -88,8 +104,11 @@ function Users() {
         />
       )}
 
-      {showModal && <Modal closeModal={closeModal} />}
-      
+      <Modal
+        closeModal={closeModal}
+        removeUsers={removeUser}
+        open={showModal}
+      />
     </Box>
   );
 }

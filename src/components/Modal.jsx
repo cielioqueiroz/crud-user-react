@@ -18,7 +18,7 @@ const useStyles = createUseStyles({
   },
 });
 
-const Modal = ({ closeModal }) => {
+const Modal = ({ closeModal, removeUsers, open }) => {
   const classes = useStyles();
 
   return (
@@ -38,7 +38,7 @@ const Modal = ({ closeModal }) => {
         <Button onClick={closeModal}>Cancelar</Button>
         <Button
           className={classes.buttonSet}
-          onClick={() => alert("ola")}
+          onClick={removeUsers}
           autoFocus
         >
           Excluir

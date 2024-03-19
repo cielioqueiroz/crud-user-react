@@ -19,20 +19,7 @@ export default function TableContent({ callEditForm, openModal }) {
   const { users, setUsers } = useContext(UserContext);
   const { pathname } = useLocation();
 
-  function slicedUser(id) {
-    const filteredUsers = users.filter((user) => user.id !== id);
-    setUsers(filteredUsers);
-  }
-
-  // async function removeUser(id, name) {
-  //   const { error } = await supabase.from("usuarios").delete().eq("id", id);
-  //   if (error) {
-  //     alert("Ops deu erro");
-  //     return;
-  //   }
-  //   alert(`Usuário ${name} excluido com Sucesso`);
-  //   slicedUser(id);
-  // }
+  
 
   return (
     <TableContainer component={Paper}>
@@ -64,8 +51,11 @@ export default function TableContent({ callEditForm, openModal }) {
               <TableCell align="left">{usuario.status}</TableCell>
               {pathname === "/users" && (
                 <TableCell align="left">
-                  <EditNote onClick={callEditForm} />
+                  <EditNote 
+                    cursor="pointer"
+                    onClick={callEditForm} />
                   <DeleteForever
+                    cursor="pointer"
                     onClick={openModal}
                   />
                 </TableCell>
