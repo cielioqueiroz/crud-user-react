@@ -6,8 +6,21 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
+import { createUseStyles } from "react-jss";
+
+const useStyles = createUseStyles({
+  buttonSet: {
+    backgroundColor: "#312929",
+    color: "#ffffff",
+    "&:hover": {
+      color: "#000000",
+    },
+  },
+});
 
 const Modal = ({ closeModal }) => {
+  const classes = useStyles();
+
   return (
     <Dialog
       open={open}
@@ -23,7 +36,11 @@ const Modal = ({ closeModal }) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={closeModal}>Cancelar</Button>
-        <Button onClick={() => alert("ola")} autoFocus>
+        <Button
+          className={classes.buttonSet}
+          onClick={() => alert("ola")}
+          autoFocus
+        >
           Excluir
         </Button>
       </DialogActions>
