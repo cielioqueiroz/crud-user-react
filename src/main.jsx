@@ -1,9 +1,11 @@
 import ReactDOM from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
-import router from "./Routers/index";
 import { ThemeProvider } from "@emotion/react";
+import { UserProvider } from "./context/useUserContext";
+ 
+import router from "./Routers/index";
 import theme from "./theme/defaults";
-import { UserProvider } from "./context/useUserContext"; 
+
 import "./assets/index.css";
 
 
