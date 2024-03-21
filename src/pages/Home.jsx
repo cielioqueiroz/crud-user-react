@@ -5,11 +5,9 @@ import formater from "../helpers/global";
 import Loading from "../components/Loading";
 import TableContent from "../components/Table";
 import { UserContext } from "../context/useUserContext";
-import emptyList from "../../public/empty.png";
 
 function Home() {
   const { users } = useContext(UserContext);
-  
 
   function countActiveUsers(users) {
     const activeUsers = users.filter((usuario) => usuario.status === "active");
@@ -35,7 +33,6 @@ function Home() {
           title="Painel de Usuários"
           subtitle="Gerenciador de contas, aqui estão todos os usuários da plataforma."
         />
-        
       </div>
       <div
         style={{
