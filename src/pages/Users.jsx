@@ -1,12 +1,13 @@
+import { Bounce, toast } from "react-toastify";
+import { Box } from "@mui/material";
 import { useState, useContext } from "react";
 
-import { Box } from "@mui/material";
-import { UserContext } from "../context/useUserContext";
-import PageHeader from "../components/PageHeader";
-import Form from "../components/Form";
 import ActionButton from "../components/Button";
-import TableContent from "../components/Table";
+import Form from "../components/Form";
 import Modal from "../components/Modal";
+import PageHeader from "../components/PageHeader";
+import TableContent from "../components/Table";
+import { UserContext } from "../context/useUserContext";
 
 import supabase from "../api/supabase";
 
@@ -43,7 +44,33 @@ function Users() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    alert("OK");
+    if (
+      formData.name === "" ||
+      formData.salario === 0 ||
+      formData.funcao === "" ||
+      formData.email === "" ||
+      formData.contato === ""
+    ) {
+      toast.error("Por favor, preencha todos os campos!", {
+        position: "top-center",
+        theme: "dark",
+        autoClose: 5000,
+        transition: Bounce,
+      });
+      return;
+    }
+
+    const existingUser = users.find((user) => user.email === formData.email);
+    if (existingUser) {
+      toast.error("Usuário já cadastrado!", {
+        position: "top-center",
+        theme: "dark",
+        autoClose: 5000,
+        transition: Bounce,
+      });
+      return;
+    }
+
     console.log(formData);
     const { data, error, status } = await supabase
       .from("usuarios")
@@ -51,6 +78,12 @@ function Users() {
     if (status === 201) {
       const newUser = { ...formData, status: "active" };
       setUsers([...users, newUser]);
+      toast.success("Usuário cadastrado com sucesso!", {
+        position: "top-center",
+        theme: "dark",
+        autoClose: 5000,
+        transition: Bounce,
+      });
     }
 
     clearFormData();
@@ -61,11 +94,24 @@ function Users() {
   async function handleUpdate(e) {
     e.preventDefault();
     console.log(formData);
-    const { data, error } = await supabase
+    const { data, error, status } = await supabase
       .from("usuarios")
       .update(formData)
       .eq("id", id)
       .select();
+    if (!error) {
+      const updatedUsers = users.map((user) =>
+        user.id === id ? { ...user, ...formData } : user
+      );
+      setUsers(updatedUsers);
+
+      toast.success("Usuário atualizado com sucesso!", {
+        position: "top-center",
+        theme: "dark",
+        autoClose: 5000,
+        transition: Bounce,
+      });
+    }
   }
 
   function showForm() {
@@ -111,11 +157,22 @@ function Users() {
   async function removeUser() {
     const { error } = await supabase.from("usuarios").delete().eq("id", id);
     if (error) {
-      alert("Ops deu erro");
+      toast.error("Erro ao excluir usuário. Por favor, tente novamente.", {
+        position: "top-center",
+        theme: "dark",
+        autoClose: 5000,
+        transition: Bounce,
+      });
+
       closeModal();
       return;
     }
-    alert(`Usuário ${name} excluido com Sucesso`);
+    toast.success(`Usuário ${name} excluido com Sucesso`, {
+      position: "top-center",
+      theme: "dark",
+      autoClose: 5000,
+      transition: Bounce,
+    });
     slicedUser(id);
     closeModal();
   }
