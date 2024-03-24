@@ -1,8 +1,9 @@
-import { useContext } from "react";
 import { Box, Typography } from "@mui/material";
-import PageHeader from "../components/PageHeader";
+import { useContext } from "react";
+
 import formater from "../helpers/global";
 import Loading from "../components/Loading";
+import PageHeader from "../components/PageHeader";
 import TableContent from "../components/Table";
 import { UserContext } from "../context/useUserContext";
 
@@ -18,6 +19,7 @@ function Home() {
     const totalSalario = users.reduce((acc, total) => acc + total.salario, 0);
     return formater(totalSalario);
   }
+
   return (
     <Box
       sx={{

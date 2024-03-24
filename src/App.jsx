@@ -1,4 +1,5 @@
-import { People, SpaceDashboard } from "@mui/icons-material";
+import { Link, Outlet } from "react-router-dom";
+
 import {
   AppBar,
   Box,
@@ -11,7 +12,8 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { Link, Outlet } from "react-router-dom";
+
+import { People, SpaceDashboard } from "@mui/icons-material";
 
 const drawerWidth = 224;
 

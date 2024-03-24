@@ -36,11 +36,7 @@ const Modal = ({ closeModal, removeUsers, open }) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={closeModal}>Cancelar</Button>
-        <Button
-          className={classes.buttonSet}
-          onClick={removeUsers}
-          autoFocus
-        >
+        <Button className={classes.buttonSet} onClick={removeUsers} autoFocus>
           Excluir
         </Button>
       </DialogActions>

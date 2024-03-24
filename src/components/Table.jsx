@@ -1,3 +1,5 @@
+import React, { useContext } from "react";
+import { useLocation } from "react-router-dom";
 import {
   TableBody,
   TableCell,
@@ -7,19 +9,14 @@ import {
   Paper,
   Table,
 } from "@mui/material";
-import React, { useContext } from "react";
-import formater from "../helpers/global";
-import { useLocation } from "react-router-dom";
-import supabase from "../api/supabase";
-import { UserContext } from "../context/useUserContext";
 import DeleteForever from "@mui/icons-material/DeleteForever";
 import EditNote from "@mui/icons-material/EditNote";
+import formater from "../helpers/global";
+import { UserContext } from "../context/useUserContext";
 
 export default function TableContent({ callEditForm, openModal }) {
   const { users, setUsers } = useContext(UserContext);
   const { pathname } = useLocation();
-
-  
 
   return (
     <TableContainer component={Paper}>
@@ -51,9 +48,9 @@ export default function TableContent({ callEditForm, openModal }) {
               <TableCell align="left">{usuario.status}</TableCell>
               {pathname === "/users" && (
                 <TableCell align="left">
-                  <EditNote 
+                  <EditNote
                     cursor="pointer"
-                    onClick={() => callEditForm(usuario)} 
+                    onClick={() => callEditForm(usuario)}
                   />
                   <DeleteForever
                     cursor="pointer"
