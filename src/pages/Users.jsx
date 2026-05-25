@@ -1,5 +1,6 @@
-import { Bounce, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { Box } from "@mui/material";
+import { Add } from "@mui/icons-material";
 import { useState, useContext } from "react";
 
 import ActionButton from "../components/Button";
@@ -11,6 +12,14 @@ import { UserContext } from "../context/useUserContext";
 
 import supabase from "../api/supabase";
 
+const emptyFormData = {
+  name: "",
+  salario: 0,
+  funcao: "",
+  email: "",
+  contato: "",
+};
+
 function Users() {
   const { users, setUsers } = useContext(UserContext);
 
@@ -19,22 +28,10 @@ function Users() {
   const [edit, setEdit] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    salario: 0,
-    funcao: "",
-    email: "",
-    contato: "",
-  });
+  const [formData, setFormData] = useState(emptyFormData);
 
   function clearFormData() {
-    setFormData({
-      name: "",
-      salario: 0,
-      funcao: "",
-      email: "",
-      contato: "",
-    });
+    setFormData(emptyFormData);
   }
 
   function handleChange(e) {
@@ -51,66 +48,81 @@ function Users() {
       formData.email === "" ||
       formData.contato === ""
     ) {
-      toast.error("Por favor, preencha todos os campos!", {
-        position: "top-center",
-        theme: "dark",
-        autoClose: 5000,
-        transition: Bounce,
-      });
+      toast.warning("Por favor, preencha todos os campos!");
       return;
     }
 
     const existingUser = users.find((user) => user.email === formData.email);
     if (existingUser) {
-      toast.error("Usuário já cadastrado!", {
-        position: "top-center",
-        theme: "dark",
-        autoClose: 5000,
-        transition: Bounce,
-      });
+      toast.warning("Usuário já cadastrado!");
       return;
     }
 
-    console.log(formData);
-    const { data, error, status } = await supabase
+    const { data, error } = await supabase
       .from("usuarios")
-      .insert(formData);
-    if (status === 201) {
-      const newUser = { ...formData, status: "active" };
-      setUsers([...users, newUser]);
-      toast.success("Usuário cadastrado com sucesso!", {
-        position: "top-center",
-        theme: "dark",
-        autoClose: 5000,
-        transition: Bounce,
-      });
+      .insert(formData)
+      .select()
+      .single();
+    if (error) {
+      console.error("Erro ao cadastrar usuário:", error);
+      toast.error(`Erro ao cadastrar: ${error.message}`);
+      return;
     }
-
+    setUsers([...users, data]);
+    toast.success("Usuário cadastrado com sucesso!");
     clearFormData();
-
     closeForm();
   }
 
   async function handleUpdate(e) {
     e.preventDefault();
-    console.log(formData);
-    const { data, error, status } = await supabase
+    const { error } = await supabase
       .from("usuarios")
       .update(formData)
       .eq("id", id)
       .select();
-    if (!error) {
-      const updatedUsers = users.map((user) =>
-        user.id === id ? { ...user, ...formData } : user
-      );
-      setUsers(updatedUsers);
+    if (error) {
+      console.error("Erro ao atualizar usuário:", error);
+      toast.error(`Erro ao atualizar: ${error.message}`);
+      return;
+    }
+    const updatedUsers = users.map((user) =>
+      user.id === id ? { ...user, ...formData } : user
+    );
+    setUsers(updatedUsers);
+    toast.success("Usuário atualizado com sucesso!");
+    closeForm();
+  }
 
-      toast.success("Usuário atualizado com sucesso!", {
-        position: "top-center",
-        theme: "dark",
-        autoClose: 5000,
-        transition: Bounce,
-      });
+  async function toggleUserStatus(user) {
+    if (user.id === undefined || user.id === null) {
+      console.error("Usuário sem id no estado local:", user);
+      toast.error("Usuário sem identificador. Recarregue a página.");
+      return;
+    }
+
+    const newStatus = user.status === "active" ? "inactive" : "active";
+    const { data, error } = await supabase
+      .from("usuarios")
+      .update({ status: newStatus })
+      .eq("id", user.id)
+      .select();
+    if (error) {
+      console.error("Erro ao atualizar status:", error);
+      toast.error(`Erro ao atualizar status: ${error.message}`);
+      return;
+    }
+    if (!data || data.length === 0) {
+      toast.warning("Nenhum usuário encontrado para atualizar.");
+      return;
+    }
+    setUsers(
+      users.map((u) => (u.id === user.id ? { ...u, status: newStatus } : u))
+    );
+    if (newStatus === "active") {
+      toast.success(`${user.name} foi ativado.`);
+    } else {
+      toast.warning(`${user.name} foi desativado.`);
     }
   }
 
@@ -157,22 +169,12 @@ function Users() {
   async function removeUser() {
     const { error } = await supabase.from("usuarios").delete().eq("id", id);
     if (error) {
-      toast.error("Erro ao excluir usuário. Por favor, tente novamente.", {
-        position: "top-center",
-        theme: "dark",
-        autoClose: 5000,
-        transition: Bounce,
-      });
-
+      console.error("Erro ao excluir usuário:", error);
+      toast.error(`Erro ao excluir: ${error.message}`);
       closeModal();
       return;
     }
-    toast.success(`Usuário ${name} excluido com Sucesso`, {
-      position: "top-center",
-      theme: "dark",
-      autoClose: 5000,
-      transition: Bounce,
-    });
+    toast.error(`${name} foi excluído.`);
     slicedUser(id);
     closeModal();
   }
@@ -183,11 +185,17 @@ function Users() {
         title="Usuários"
         subtitle="Gerenciador de ações, aqui será realizadas as ações para o usuário."
       />
-      <Box sx={{ padding: "20px 0" }}>
-        <ActionButton action={showForm}>Cadastrar Usuário</ActionButton>
+      <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
+        <ActionButton action={showForm} startIcon={<Add />}>
+          Cadastrar Usuário
+        </ActionButton>
       </Box>
 
-      <TableContent callEditForm={callEditForm} openModal={openModal} />
+      <TableContent
+        callEditForm={callEditForm}
+        openModal={openModal}
+        toggleStatus={toggleUserStatus}
+      />
 
       {isVisible && (
         <Form

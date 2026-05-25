@@ -1,4 +1,5 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Paper, Typography } from "@mui/material";
+import { ErrorOutline, Groups, Paid, TaskAlt } from "@mui/icons-material";
 import { useContext } from "react";
 
 import formater from "../helpers/global";
@@ -7,84 +8,154 @@ import PageHeader from "../components/PageHeader";
 import TableContent from "../components/Table";
 import { UserContext } from "../context/useUserContext";
 
-function Home() {
-  const { users } = useContext(UserContext);
+function StatCard({ icon: Icon, label, value, bg, iconColor, accent }) {
+  return (
+    <Paper
+      sx={{
+        p: 2.5,
+        borderLeft: "3px solid transparent",
+        transition: "transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease",
+        "&:hover": {
+          transform: "translateY(-2px)",
+          boxShadow: "0 8px 24px rgba(15,23,42,0.08)",
+          borderLeftColor: accent,
+        },
+      }}
+    >
+      <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+        <Box
+          sx={{
+            width: 48,
+            height: 48,
+            borderRadius: 2,
+            backgroundColor: bg,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexShrink: 0,
+          }}
+        >
+          <Icon sx={{ color: iconColor, fontSize: 26 }} />
+        </Box>
+        <Box sx={{ minWidth: 0 }}>
+          <Typography
+            variant="overline"
+            sx={{ color: "text.secondary", display: "block", lineHeight: 1.2 }}
+          >
+            {label}
+          </Typography>
+          <Typography variant="h5" sx={{ mt: 0.5 }}>
+            {value}
+          </Typography>
+        </Box>
+      </Box>
+    </Paper>
+  );
+}
 
-  function countActiveUsers(users) {
-    const activeUsers = users.filter((usuario) => usuario.status === "active");
-    return activeUsers.length;
+const pageHeaderProps = {
+  title: "Painel de Usuários",
+  subtitle: "Gerenciador de contas, aqui estão todos os usuários da plataforma.",
+};
+
+function Home() {
+  const { users, loading, error } = useContext(UserContext);
+
+  const totalUsers = users.length;
+  const activeUsers = users.filter((u) => u.status === "active");
+  const totalActive = activeUsers.length;
+  const totalSalario = formater(
+    activeUsers.reduce((acc, u) => acc + Number(u.salario || 0), 0)
+  );
+
+  if (loading) {
+    return (
+      <Box>
+        <PageHeader {...pageHeaderProps} />
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            py: 10,
+          }}
+        >
+          <Loading />
+        </Box>
+      </Box>
+    );
   }
 
-  function countSalario(users) {
-    const totalSalario = users.reduce((acc, total) => acc + total.salario, 0);
-    return formater(totalSalario);
+  if (error) {
+    return (
+      <Box>
+        <PageHeader {...pageHeaderProps} />
+        <Paper
+          sx={{
+            p: 6,
+            textAlign: "center",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 1.5,
+          }}
+        >
+          <ErrorOutline sx={{ fontSize: 56, color: "error.main" }} />
+          <Typography variant="h6">Erro ao carregar usuários</Typography>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ maxWidth: 420 }}
+          >
+            Não foi possível conectar ao servidor. Verifique sua conexão e a
+            configuração do Supabase.
+          </Typography>
+        </Paper>
+      </Box>
+    );
   }
 
   return (
-    <Box
-      sx={{
-        height: "100%",
-      }}
-    >
-      <div
-        style={{
-          height: "25%",
+    <Box>
+      <PageHeader {...pageHeaderProps} />
+      <Box
+        sx={{
+          display: "grid",
+          gap: 2,
+          mb: 3,
+          gridTemplateColumns: {
+            xs: "1fr",
+            sm: "repeat(2, 1fr)",
+            md: "repeat(3, 1fr)",
+          },
         }}
       >
-        <PageHeader
-          title="Painel de Usuários"
-          subtitle="Gerenciador de contas, aqui estão todos os usuários da plataforma."
+        <StatCard
+          icon={Groups}
+          label="Total de Usuários"
+          value={totalUsers}
+          bg="#eef2ff"
+          iconColor="#4f46e5"
+          accent="#4f46e5"
         />
-      </div>
-      <div
-        style={{
-          height: "75%",
-        }}
-      >
-        {!users.length ? ( // se usuário estiver vazio, exibe o loading
-          <Box
-            sx={{
-              height: "100%",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Loading />
-          </Box>
-        ) : (
-          <>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                backgroundColor: "#fff",
-                marginBottom: "30px",
-                padding: "15px 20px 10px",
-                borderRadius: "6px",
-              }}
-            >
-              <div>
-                <Typography variant="h6" gutterBottom>
-                  Total de Usuários: <span>{users.length}</span>
-                </Typography>
-              </div>
-              <div>
-                <Typography variant="h6" gutterBottom>
-                  Total de Salários: <span>{countSalario(users)}</span>
-                </Typography>
-              </div>
-              <div>
-                <Typography variant="h6" gutterBottom>
-                  Total de Usuários Ativos:{" "}
-                  <span>{countActiveUsers(users)}</span>
-                </Typography>
-              </div>
-            </Box>
-            <TableContent />
-          </>
-        )}
-      </div>
+        <StatCard
+          icon={Paid}
+          label="Total de Salários"
+          value={totalSalario}
+          bg="#ecfdf5"
+          iconColor="#059669"
+          accent="#10b981"
+        />
+        <StatCard
+          icon={TaskAlt}
+          label="Usuários Ativos"
+          value={totalActive}
+          bg="#fef3c7"
+          iconColor="#d97706"
+          accent="#f59e0b"
+        />
+      </Box>
+      <TableContent />
     </Box>
   );
 }

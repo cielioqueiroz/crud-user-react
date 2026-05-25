@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Dialog,
   DialogActions,
@@ -6,37 +7,51 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import { createUseStyles } from "react-jss";
-
-const useStyles = createUseStyles({
-  buttonSet: {
-    backgroundColor: "#312929",
-    color: "#ffffff",
-    "&:hover": {
-      color: "#000000",
-    },
-  },
-});
+import { WarningAmberRounded } from "@mui/icons-material";
 
 const Modal = ({ closeModal, removeUsers, open }) => {
-  const classes = useStyles();
-
   return (
     <Dialog
       open={open}
       onClose={closeModal}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
+      PaperProps={{ sx: { maxWidth: 440, width: "100%" } }}
     >
-      <DialogTitle id="alert-dialog-title">{"Deletar usuário"}</DialogTitle>
+      <DialogTitle
+        id="alert-dialog-title"
+        sx={{ display: "flex", alignItems: "center", gap: 1.5, pb: 1 }}
+      >
+        <Box
+          sx={{
+            width: 40,
+            height: 40,
+            borderRadius: "50%",
+            backgroundColor: "#fee2e2",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <WarningAmberRounded sx={{ color: "error.main" }} />
+        </Box>
+        Deletar usuário
+      </DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          Deseja realmente remover este usuário?
+          Esta ação não pode ser desfeita. Deseja realmente remover este usuário?
         </DialogContentText>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={closeModal}>Cancelar</Button>
-        <Button className={classes.buttonSet} onClick={removeUsers} autoFocus>
+      <DialogActions sx={{ px: 3, pb: 2.5, gap: 1 }}>
+        <Button onClick={closeModal} variant="outlined" color="inherit">
+          Cancelar
+        </Button>
+        <Button
+          onClick={removeUsers}
+          variant="contained"
+          color="error"
+          autoFocus
+        >
           Excluir
         </Button>
       </DialogActions>

@@ -1,9 +1,19 @@
-import React from "react";
 import { Button } from "@mui/material";
 
-export default function ActionButton({ action = null, children, type = "button" }) {
+export default function ActionButton({
+  action = null,
+  children,
+  type = "button",
+  startIcon,
+  variant = "contained",
+}) {
   return (
-    <Button variant="contained" type={type} onClick={action}>
+    <Button
+      variant={variant}
+      type={type}
+      onClick={action}
+      startIcon={startIcon}
+    >
       {children}
     </Button>
   );

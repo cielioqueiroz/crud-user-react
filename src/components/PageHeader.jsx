@@ -1,16 +1,18 @@
+import { Box, Typography } from "@mui/material";
+
 function PageHeader({ title, subtitle }) {
   return (
-    <>
-      <h2
-        style={{
-          padding: "40px 0",
-          fontSize: "2rem",
-        }}
-      >
+    <Box sx={{ pb: 3 }}>
+      <Typography variant="h4" component="h1" sx={{ mb: 0.5 }}>
         {title}
-      </h2>
-      <p>{subtitle}</p>
-    </>
+      </Typography>
+      <Typography
+        variant="body2"
+        sx={{ color: "text.secondary", fontSize: "0.95rem" }}
+      >
+        {subtitle}
+      </Typography>
+    </Box>
   );
 }
 

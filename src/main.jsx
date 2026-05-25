@@ -1,7 +1,7 @@
 import ReactDOM from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
 import { ThemeProvider } from "@emotion/react";
-import { ToastContainer } from "react-toastify";
+import { Slide, ToastContainer } from "react-toastify";
 import { UserProvider } from "./context/useUserContext";
 
 import router from "./Routers/index";
@@ -18,7 +18,18 @@ import "@fontsource/roboto/700.css";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <ThemeProvider theme={theme}>
     <UserProvider>
-      <ToastContainer />
+      <ToastContainer
+        position="top-right"
+        autoClose={4000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        pauseOnFocusLoss
+        pauseOnHover
+        draggable
+        theme="colored"
+        transition={Slide}
+      />
       <RouterProvider router={router} />
     </UserProvider>
   </ThemeProvider>
